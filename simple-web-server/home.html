@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>숙박업소 예약 홈페이지</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .header {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .nav-buttons a {
+            margin: 0 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .nav-buttons a:hover {
+            background-color: #45a049;
+        }
+        .slideshow-container {
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+            margin: auto;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .slides {
+            display: none;
+            width: 100%;
+        }
+        .slides img {
+            width: 100%;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>숙박업소 예약 홈페이지</h1>
+    </div>
+    <div class="nav-buttons">
+        <a href="reservation.html">예약하기</a>
+        <a href="index.html">설문조사</a>
+        <a href="reviews.php">후기 보기</a>
+    </div>
+    <div class="slideshow-container">
+        <div class="slides">
+            <img src="nature1.jpg" alt="자연 풍경 1">
+        </div>
+        <div class="slides">
+            <img src="nature2.jpg" alt="자연 풍경 2">
+        </div>
+        <div class="slides">
+            <img src="nature3.jpg" alt="자연 풍경 3">
+        </div>
+        <!-- 필요한 만큼 슬라이드를 추가하세요 -->
+    </div>
+
+    <script>
+        let slideIndex = 0;
+
+        function showSlides() {
+            const slides = document.getElementsByClassName("slides");
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1; }
+            slides[slideIndex - 1].style.display = "block";
+            setTimeout(showSlides, 3000); // 3초마다 슬라이드를 변경합니다.
+        }
+
+        document.addEventListener("DOMContentLoaded", showSlides);
+    </script>
+</body>
+</html>
+

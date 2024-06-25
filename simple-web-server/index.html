@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고객 만족도 조사</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative; /* 추가 */
+        }
+        .nav-buttons { /* 추가 */
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+        .nav-buttons a { /* 추가 */
+            margin-right: 10px;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .nav-buttons a:hover { /* 추가 */
+            background-color: #45a049;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group textarea, .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .form-group textarea {
+            height: 100px;
+            resize: none;
+        }
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #bbb; /* 비활성화 상태일 때 회색 */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: not-allowed;
+        }
+        .form-group button.active {
+            background-color: #4CAF50; /* 활성화 상태일 때 녹색 */
+            cursor: pointer;
+        }
+        .form-group button.active:hover {
+            background-color: #45a049;
+        }
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-start;
+        }
+        .star-rating input {
+            display: none;
+        }
+        .star-rating label {
+            font-size: 24px;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .star-rating input:checked ~ label {
+            color: #f39c12;
+        }
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: #f39c12;
+        }
+    </style>
+    <script>
+        function checkFormValidity() {
+            const author = document.getElementById('author').value.trim();
+            const headline = document.getElementById('headline').value.trim();
+            const good = document.getElementById('good').value.trim();
+            const improve = document.getElementById('improve').value.trim();
+            const revisit = document.getElementById('revisit').value.trim();
+            const rating = document.querySelector('input[name="rating"]:checked');
+
+            const isFormValid = author && headline && good && improve && revisit && rating;
+
+            const submitButton = document.querySelector('.form-group button');
+            if (isFormValid) {
+                submitButton.classList.add('active');
+                submitButton.disabled = false;
+            } else {
+                submitButton.classList.remove('active');
+                submitButton.disabled = true;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const formElements = document.querySelectorAll('#surveyForm input, #surveyForm textarea, .star-rating input');
+            formElements.forEach(element => {
+                element.addEventListener('input', checkFormValidity);
+                element.addEventListener('change', checkFormValidity);
+            });
+
+            // 초기 상태 확인
+            checkFormValidity();
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-buttons">
+            <a href="home.html">홈</a>
+            <a href="reviews.php">다른 사람 후기</a>
+        </div>
+        <h2>고객 만족도 조사</h2>
+        <form id="surveyForm" action="submit.php" method="POST">
+            <div class="form-group">
+                <label for="author">작성자:</label>
+                <input type="text" id="author" name="author" required>
+            </div>
+            <div class="form-group">
+                <label for="headline">한줄평:</label>
+                <input type="text" id="headline" name="headline" required>
+            </div>
+            <div class="form-group">
+                <label for="good">좋았던 점:</label>
+                <textarea id="good" name="good" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="improve">불편하거나 개선했으면 하는 점:</label>
+                <textarea id="improve" name="improve" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="revisit">재방문 의사:</label>
+                <textarea id="revisit" name="revisit" required></textarea>
+            </div>
+            <div class="form-group">
+                <label>별점:</label>
+                <div class="star-rating">
+                    <input type="radio" id="star5" name="rating" value="5" required><label for="star5">★</label>
+                    <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+                    <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+                    <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+                    <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" disabled>제출</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+
