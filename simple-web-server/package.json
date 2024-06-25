@@ -1,0 +1,13 @@
+{
+  "name": "simple-web-server",
+  "version": "1.0.0",
+  "description": "A simple web server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "http": "^0.0.1"
+  }
+}
+
