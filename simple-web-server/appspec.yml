@@ -5,6 +5,6 @@ files:
     destination: /home/test/simple-web-server
 hooks:
   AfterInstall:
-    - location: /home/test/simple-web-server/deploy_server.sh
+    - location: deploy_server.sh
       timeout: 300
       runas: root
