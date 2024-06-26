@@ -1,11 +1,11 @@
 <?php
-// DB 연결 설정
+// 데이터베이스 연결 설정
 $servername = "localhost";
 $username = "reviewuser"; // MySQL 사용자 이름
 $password = "password"; // MySQL 비밀번호
 $dbname = "reviewdb"; // 데이터베이스 이름
 
-// DB 연결
+// 데이터베이스 연결
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 // 연결 확인
@@ -37,7 +37,7 @@ if ($stmt->execute()) {
 $stmt->close();
 $conn->close();
 
-// 리뷰 페이지로 리다이렉트
+// 리뷰 페이지로 리디렉트
 header("Location: reviews.php");
 exit;
 ?>

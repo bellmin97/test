@@ -34,7 +34,7 @@
             max-width: 600px;
             width: 100%;
             padding: 20px;
-            margin: 70px auto 0; /* 상단 고정 네비게이션 바의 높이를 고려 */
+            margin: 70px auto 0;
             border: 1px solid #ddd;
             border-radius: 10px;
             background-color: #fff;
@@ -59,12 +59,12 @@
         .form-group textarea {
             height: 100px;
             resize: none;
-            color: #999; /* 회색 텍스트 색상 */
+            color: #999;
         }
         .form-group button {
             width: 100%;
             padding: 10px;
-            background-color: #bbb; /* 비활성화 상태일 때 회색 */
+            background-color: #bbb;
             color: white;
             border: none;
             border-radius: 5px;
@@ -73,7 +73,7 @@
             transition: background-color 0.3s ease;
         }
         .form-group button.active {
-            background-color: #4CAF50; /* 활성화 상태일 때 녹색 */
+            background-color: #4CAF50;
             cursor: pointer;
         }
         .form-group button.active:hover {
@@ -100,7 +100,6 @@
         .star-rating label:hover ~ label {
             color: #f39c12;
         }
-        /* 반응형 디자인 */
         @media (max-width: 600px) {
             .container {
                 margin: 70px 10px 0;
@@ -158,7 +157,6 @@
             improveTextarea.addEventListener('focus', handleImproveFocus);
             improveTextarea.addEventListener('blur', handleImproveBlur);
 
-            // 초기 상태 확인 및 개선 사항 안내 메시지 설정
             checkFormValidity();
             if (improveTextarea.value.trim() === '') {
                 improveTextarea.value = '개선 사항을 적어야 제출이 가능합니다.';
