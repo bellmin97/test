@@ -22,14 +22,14 @@
             border-radius: 10px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            position: relative; /* 추가 */
+            position: relative;
         }
-        .nav-buttons { /* 추가 */
+        .nav-buttons {
             position: absolute;
             top: 10px;
             left: 10px;
         }
-        .nav-buttons a { /* 추가 */
+        .nav-buttons a {
             margin-right: 10px;
             padding: 5px 10px;
             background-color: #4CAF50;
@@ -37,7 +37,7 @@
             text-decoration: none;
             border-radius: 5px;
         }
-        .nav-buttons a:hover { /* 추가 */
+        .nav-buttons a:hover {
             background-color: #45a049;
         }
         .form-group {
@@ -101,13 +101,10 @@
     <script>
         function checkFormValidity() {
             const author = document.getElementById('author').value.trim();
-            const headline = document.getElementById('headline').value.trim();
-            const good = document.getElementById('good').value.trim();
             const improve = document.getElementById('improve').value.trim();
-            const revisit = document.getElementById('revisit').value.trim();
-            const rating = document.querySelector('input[name="rating"]:checked');
+            const ratings = document.querySelectorAll('.star-rating input:checked');
 
-            const isFormValid = author && headline && good && improve && revisit && rating;
+            const isFormValid = author && improve && ratings.length === 5;
 
             const submitButton = document.querySelector('.form-group button');
             if (isFormValid) {
@@ -144,30 +141,58 @@
                 <input type="text" id="author" name="author" required>
             </div>
             <div class="form-group">
-                <label for="headline">한줄평:</label>
-                <input type="text" id="headline" name="headline" required>
-            </div>
-            <div class="form-group">
-                <label for="good">좋았던 점:</label>
-                <textarea id="good" name="good" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="improve">불편하거나 개선했으면 하는 점:</label>
-                <textarea id="improve" name="improve" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="revisit">재방문 의사:</label>
-                <textarea id="revisit" name="revisit" required></textarea>
-            </div>
-            <div class="form-group">
-                <label>별점:</label>
+                <label>서비스 만족도:</label>
                 <div class="star-rating">
-                    <input type="radio" id="star5" name="rating" value="5" required><label for="star5">★</label>
-                    <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
-                    <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
-                    <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
-                    <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+                    <input type="radio" id="service5" name="service_rating" value="5" required><label for="service5">★</label>
+                    <input type="radio" id="service4" name="service_rating" value="4"><label for="service4">★</label>
+                    <input type="radio" id="service3" name="service_rating" value="3"><label for="service3">★</label>
+                    <input type="radio" id="service2" name="service_rating" value="2"><label for="service2">★</label>
+                    <input type="radio" id="service1" name="service_rating" value="1"><label for="service1">★</label>
                 </div>
+            </div>
+            <div class="form-group">
+                <label>청결도:</label>
+                <div class="star-rating">
+                    <input type="radio" id="cleanliness5" name="cleanliness_rating" value="5" required><label for="cleanliness5">★</label>
+                    <input type="radio" id="cleanliness4" name="cleanliness_rating" value="4"><label for="cleanliness4">★</label>
+                    <input type="radio" id="cleanliness3" name="cleanliness_rating" value="3"><label for="cleanliness3">★</label>
+                    <input type="radio" id="cleanliness2" name="cleanliness_rating" value="2"><label for="cleanliness2">★</label>
+                    <input type="radio" id="cleanliness1" name="cleanliness_rating" value="1"><label for="cleanliness1">★</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>직원 친절도:</label>
+                <div class="star-rating">
+                    <input type="radio" id="friendliness5" name="friendliness_rating" value="5" required><label for="friendliness5">★</label>
+                    <input type="radio" id="friendliness4" name="friendliness_rating" value="4"><label for="friendliness4">★</label>
+                    <input type="radio" id="friendliness3" name="friendliness_rating" value="3"><label for="friendliness3">★</label>
+                    <input type="radio" id="friendliness2" name="friendliness_rating" value="2"><label for="friendliness2">★</label>
+                    <input type="radio" id="friendliness1" name="friendliness_rating" value="1"><label for="friendliness1">★</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>가격 대비 만족도:</label>
+                <div class="star-rating">
+                    <input type="radio" id="value5" name="value_rating" value="5" required><label for="value5">★</label>
+                    <input type="radio" id="value4" name="value_rating" value="4"><label for="value4">★</label>
+                    <input type="radio" id="value3" name="value_rating" value="3"><label for="value3">★</label>
+                    <input type="radio" id="value2" name="value_rating" value="2"><label for="value2">★</label>
+                    <input type="radio" id="value1" name="value_rating" value="1"><label for="value1">★</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>재방문 의사:</label>
+                <div class="star-rating">
+                    <input type="radio" id="revisit5" name="revisit_rating" value="5" required><label for="revisit5">★</label>
+                    <input type="radio" id="revisit4" name="revisit_rating" value="4"><label for="revisit4">★</label>
+                    <input type="radio" id="revisit3" name="revisit_rating" value="3"><label for="revisit3">★</label>
+                    <input type="radio" id="revisit2" name="revisit_rating" value="2"><label for="revisit2">★</label>
+                    <input type="radio" id="revisit1" name="revisit_rating" value="1"><label for="revisit1">★</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="improve">개선 사항:</label>
+                <textarea id="improve" name="improve" required></textarea>
             </div>
             <div class="form-group">
                 <button type="submit" disabled>제출</button>
@@ -176,4 +201,3 @@
     </div>
 </body>
 </html>
-
