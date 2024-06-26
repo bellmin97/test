@@ -1,39 +1,43 @@
 <?php
-// submit.php
+// DB 연결 설정
+$servername = "localhost";
+$username = "reviewuser"; // MySQL 사용자 이름
+$password = "password"; // MySQL 비밀번호
+$dbname = "reviewdb"; // 데이터베이스 이름
 
-// 데이터가 POST 방식으로 전송되었는지 확인합니다.
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // 설문조사 데이터를 변수에 저장합니다.
-    $author = $_POST['author'];
-    $headline = $_POST['headline'];
-    $good = $_POST['good'];
-    $improve = $_POST['improve'];
-    $revisit = $_POST['revisit'];
-    $rating = $_POST['rating'];
+// DB 연결
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-    // 현재 날짜와 시간을 가져옵니다.
-    $date = date('Y-m-d H:i:s');
-
-    // 설문조사 데이터를 저장할 파일을 엽니다.
-    $file = 'survey_results.txt';
-    $current = file_get_contents($file);
-    
-    // 새로운 설문조사 데이터를 추가합니다.
-    $current .= "날짜: " . $date . "\n";
-    $current .= "작성자: " . $author . "\n";
-    $current .= "한줄평: " . $headline . "\n";
-    $current .= "좋았던 점: " . $good . "\n";
-    $current .= "불편하거나 개선했으면 하는 점: " . $improve . "\n";
-    $current .= "재방문 의사: " . $revisit . "\n";
-    $current .= "별점: " . $rating . "\n";
-    $current .= "-----------------------------\n";
-
-    // 파일에 내용을 저장합니다.
-    file_put_contents($file, $current);
-
-    // 성공 메시지 페이지로 리디렉션합니다.
-    header('Location: thankyou.html');
-    exit;
+// 연결 확인
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
-?>
 
+// POST 데이터 수신
+$author = $_POST['author'];
+$service_rating = $_POST['service_rating'];
+$cleanliness_rating = $_POST['cleanliness_rating'];
+$friendliness_rating = $_POST['friendliness_rating'];
+$value_rating = $_POST['value_rating'];
+$revisit_rating = $_POST['revisit_rating'];
+$improve = $_POST['improve'];
+
+// 데이터베이스에 삽입
+$sql = "INSERT INTO reviews (author, service_rating, cleanliness_rating, friendliness_rating, value_rating, revisit_rating, improve)
+        VALUES (?, ?, ?, ?, ?, ?, ?)";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("siiiiis", $author, $service_rating, $cleanliness_rating, $friendliness_rating, $value_rating, $revisit_rating, $improve);
+
+if ($stmt->execute()) {
+    echo "후기가 성공적으로 저장되었습니다.";
+} else {
+    echo "오류가 발생했습니다: " . $stmt->error;
+}
+
+$stmt->close();
+$conn->close();
+
+// 리뷰 페이지로 리다이렉트
+header("Location: reviews.php");
+exit;
+?>

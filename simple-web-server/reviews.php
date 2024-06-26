@@ -96,82 +96,60 @@
         <h2>다른 사람 후기</h2>
         
         <?php
-        // 에러 메시지 출력을 위한 설정
-        error_reporting(E_ALL);
-        ini_set('display_errors', 1);
-
-        // DB 연결
+        // DB 연결 설정
         $servername = "localhost";
         $username = "reviewuser"; // MySQL 사용자 이름
         $password = "password"; // MySQL 비밀번호
         $dbname = "reviewdb"; // 데이터베이스 이름
 
+        // DB 연결
         $conn = new mysqli($servername, $username, $password, $dbname);
 
         // 연결 확인
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
-        } else {
-            echo "<p>데이터베이스에 성공적으로 연결되었습니다.</p>";
         }
 
-        // 테이블 존재 확인
-        $tableCheckSql = "SHOW TABLES LIKE 'reviews'";
-        $tableCheckResult = $conn->query($tableCheckSql);
+        // 페이지네이션 설정
+        $limit = 4; // 한 페이지에 표시할 후기 수
+        $page = isset($_GET['page']) ? $_GET['page'] : 1;
+        $offset = ($page - 1) * $limit;
 
-        if ($tableCheckResult->num_rows == 0) {
-            echo "<p>'reviews' 테이블이 존재하지 않습니다. 데이터베이스 설정을 확인하세요.</p>";
-        } else {
-            // 페이지네이션 설정
-            $limit = 4; // 한 페이지에 표시할 후기 수
-            $page = isset($_GET['page']) ? $_GET['page'] : 1;
-            $offset = ($page - 1) * $limit;
+        // 후기 가져오기
+        $sql = "SELECT * FROM reviews ORDER BY created_at DESC LIMIT $limit OFFSET $offset";
+        $result = $conn->query($sql);
 
-            // 후기 가져오기
-            $sql = "SELECT * FROM reviews ORDER BY created_at DESC LIMIT $limit OFFSET $offset";
-            $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                // 작성자의 이름 뒤에 * 처리
+                $author = mb_substr($row['author'], 0, -1) . '*';
 
-            if ($result === FALSE) {
-                echo "<p>쿼리 오류: " . $conn->error . "</p>";
-            } else {
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        // 작성자의 이름 뒤에 * 처리
-                        $author = mb_substr($row['author'], 0, -1) . '*';
+                // 별점 평균 계산
+                $averageRating = round(($row['service_rating'] + $row['cleanliness_rating'] + $row['friendliness_rating'] + $row['value_rating'] + $row['revisit_rating']) / 5, 1);
 
-                        // 별점 평균 계산
-                        $averageRating = round(($row['service_rating'] + $row['cleanliness_rating'] + $row['friendliness_rating'] + $row['value_rating'] + $row['revisit_rating']) / 5, 1);
-
-                        echo "<div class='review'>";
-                        echo "<div class='author'>$author</div>";
-                        echo "<div class='rating'>평균 별점: " . str_repeat('★', floor($averageRating)) . "</div>";
-                        echo "</div>";
-                    }
-                } else {
-                    echo "<p>후기가 없습니다.</p>";
-                }
-
-                // 총 후기 수 가져오기
-                $sqlTotal = "SELECT COUNT(*) FROM reviews";
-                $resultTotal = $conn->query($sqlTotal);
-                if ($resultTotal === FALSE) {
-                    echo "<p>총 후기 수 쿼리 오류: " . $conn->error . "</p>";
-                } else {
-                    $totalReviews = $resultTotal->fetch_row()[0];
-                    $totalPages = ceil($totalReviews / $limit);
-                }
+                echo "<div class='review'>";
+                echo "<div class='author'>$author</div>";
+                echo "<div class='rating'>평균 별점: " . str_repeat('★', floor($averageRating)) . "</div>";
+                echo "<div class='improve'>개선 사항: " . htmlspecialchars($row['improve']) . "</div>";
+                echo "</div>";
             }
+        } else {
+            echo "<p>후기가 없습니다.</p>";
         }
+
+        // 총 후기 수 가져오기
+        $sqlTotal = "SELECT COUNT(*) FROM reviews";
+        $resultTotal = $conn->query($sqlTotal);
+        $totalReviews = $resultTotal->fetch_row()[0];
+        $totalPages = ceil($totalReviews / $limit);
 
         $conn->close();
         ?>
 
         <div class="pagination">
             <?php
-            if (isset($totalPages)) {
-                for ($i = 1; $i <= $totalPages; $i++) {
-                    echo "<a href='reviews.php?page=$i'>$i</a>";
-                }
+            for ($i = 1; $i <= $totalPages; $i++) {
+                echo "<a href='reviews.php?page=$i'>$i</a>";
             }
             ?>
         </div>
