@@ -96,6 +96,10 @@
         <h2>다른 사람 후기</h2>
         
         <?php
+        // 에러 메시지 출력을 위한 설정
+        error_reporting(E_ALL);
+        ini_set('display_errors', 1);
+
         // DB 연결
         $servername = "localhost";
         $username = "reviewuser"; // MySQL 사용자 이름
@@ -107,6 +111,8 @@
         // 연결 확인
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
+        } else {
+            echo "<p>데이터베이스에 성공적으로 연결되었습니다.</p>";
         }
 
         // 테이블 존재 확인
@@ -125,28 +131,36 @@
             $sql = "SELECT * FROM reviews ORDER BY created_at DESC LIMIT $limit OFFSET $offset";
             $result = $conn->query($sql);
 
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    // 작성자의 이름 뒤에 * 처리
-                    $author = mb_substr($row['author'], 0, -1) . '*';
-
-                    // 별점 평균 계산
-                    $averageRating = round(($row['service_rating'] + $row['cleanliness_rating'] + $row['friendliness_rating'] + $row['value_rating'] + $row['revisit_rating']) / 5, 1);
-
-                    echo "<div class='review'>";
-                    echo "<div class='author'>$author</div>";
-                    echo "<div class='rating'>평균 별점: " . str_repeat('★', floor($averageRating)) . "</div>";
-                    echo "</div>";
-                }
+            if ($result === FALSE) {
+                echo "<p>쿼리 오류: " . $conn->error . "</p>";
             } else {
-                echo "<p>후기가 없습니다.</p>";
-            }
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        // 작성자의 이름 뒤에 * 처리
+                        $author = mb_substr($row['author'], 0, -1) . '*';
 
-            // 총 후기 수 가져오기
-            $sqlTotal = "SELECT COUNT(*) FROM reviews";
-            $resultTotal = $conn->query($sqlTotal);
-            $totalReviews = $resultTotal->fetch_row()[0];
-            $totalPages = ceil($totalReviews / $limit);
+                        // 별점 평균 계산
+                        $averageRating = round(($row['service_rating'] + $row['cleanliness_rating'] + $row['friendliness_rating'] + $row['value_rating'] + $row['revisit_rating']) / 5, 1);
+
+                        echo "<div class='review'>";
+                        echo "<div class='author'>$author</div>";
+                        echo "<div class='rating'>평균 별점: " . str_repeat('★', floor($averageRating)) . "</div>";
+                        echo "</div>";
+                    }
+                } else {
+                    echo "<p>후기가 없습니다.</p>";
+                }
+
+                // 총 후기 수 가져오기
+                $sqlTotal = "SELECT COUNT(*) FROM reviews";
+                $resultTotal = $conn->query($sqlTotal);
+                if ($resultTotal === FALSE) {
+                    echo "<p>총 후기 수 쿼리 오류: " . $conn->error . "</p>";
+                } else {
+                    $totalReviews = $resultTotal->fetch_row()[0];
+                    $totalPages = ceil($totalReviews / $limit);
+                }
+            }
         }
 
         $conn->close();
@@ -154,8 +168,10 @@
 
         <div class="pagination">
             <?php
-            for ($i = 1; $i <= $totalPages; $i++) {
-                echo "<a href='reviews.php?page=$i'>$i</a>";
+            if (isset($totalPages)) {
+                for ($i = 1; $i <= $totalPages; $i++) {
+                    echo "<a href='reviews.php?page=$i'>$i</a>";
+                }
             }
             ?>
         </div>
