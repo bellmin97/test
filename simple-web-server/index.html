@@ -58,6 +58,7 @@
         .form-group textarea {
             height: 100px;
             resize: none;
+            color: #999; /* 회색 텍스트 색상 */
         }
         .form-group button {
             width: 100%;
@@ -116,6 +117,20 @@
             }
         }
 
+        function handleImproveFocus(event) {
+            if (event.target.value === '개선 사항을 적어야 제출이 가능합니다.') {
+                event.target.value = '';
+                event.target.style.color = '#000';
+            }
+        }
+
+        function handleImproveBlur(event) {
+            if (event.target.value.trim() === '') {
+                event.target.value = '개선 사항을 적어야 제출이 가능합니다.';
+                event.target.style.color = '#999';
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             const formElements = document.querySelectorAll('#surveyForm input, #surveyForm textarea, .star-rating input');
             formElements.forEach(element => {
@@ -123,8 +138,16 @@
                 element.addEventListener('change', checkFormValidity);
             });
 
-            // 초기 상태 확인
+            const improveTextarea = document.getElementById('improve');
+            improveTextarea.addEventListener('focus', handleImproveFocus);
+            improveTextarea.addEventListener('blur', handleImproveBlur);
+
+            // 초기 상태 확인 및 개선 사항 안내 메시지 설정
             checkFormValidity();
+            if (improveTextarea.value.trim() === '') {
+                improveTextarea.value = '개선 사항을 적어야 제출이 가능합니다.';
+                improveTextarea.style.color = '#999';
+            }
         });
     </script>
 </head>
@@ -192,7 +215,7 @@
             </div>
             <div class="form-group">
                 <label for="improve">개선 사항:</label>
-                <textarea id="improve" name="improve" required></textarea>
+                <textarea id="improve" name="improve" required>개선 사항을 적어야 제출이 가능합니다.</textarea>
             </div>
             <div class="form-group">
                 <button type="submit" disabled>제출</button>
