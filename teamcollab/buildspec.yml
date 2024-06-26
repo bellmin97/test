@@ -1,0 +1,31 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto11
+    commands:
+      - echo Installing dependencies...
+      - ./mvnw dependency:resolve
+  pre_build:
+    commands:
+      - echo Pre-build stage...
+      - ./mvnw clean
+  build:
+    commands:
+      - echo Build stage...
+      - ./mvnw package -DskipTests
+  post_build:
+    commands:
+      - echo Post-build stage...
+      - echo Build completed on `date`
+
+artifacts:
+  files:
+    - target/*.jar
+  discard-paths: yes
+  base-directory: target
+
+cache:
+  paths:
+    - '/root/.m2/**/*'
