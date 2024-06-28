@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <title>Task List</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -57,11 +59,13 @@
             <th>Name</th>
             <th>Description</th>
         </tr>
-        <tr th:each="task : ${tasks}">
-            <td th:text="${task.id}">1</td>
-            <td th:text="${task.name}">Task Name</td>
-            <td th:text="${task.description}">Task Description</td>
+        <#list tasks as task>
+        <tr>
+            <td>${task.id}</td>
+            <td>${task.name}</td>
+            <td>${task.description}</td>
         </tr>
+        </#list>
     </table>
     <a href="/tasks/new" class="button">Add New Task</a>
 </body>
