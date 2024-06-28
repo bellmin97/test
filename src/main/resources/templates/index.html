@@ -1,24 +1,68 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Task Manager</title>
+    <title>Task List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+        }
+        h1 {
+            color: #b30000;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #ffcccc;
+        }
+        tr:nth-child(even) {
+            background-color: #ffe6e6;
+        }
+        a {
+            text-decoration: none;
+            color: #b30000;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .button {
+            background-color: #b30000;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+        .button:hover {
+            background-color: #800000;
+        }
+    </style>
 </head>
 <body>
-    <h1>Task Manager</h1>
+    <h1>Tasks</h1>
     <table>
-        <thead>
-            <tr>
-                <th>Description</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="task : ${tasks}">
-                <td th:text="${task.description}"></td>
-                <td th:text="${task.status}"></td>
-            </tr>
-        </tbody>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        <tr th:each="task : ${tasks}">
+            <td th:text="${task.id}">1</td>
+            <td th:text="${task.name}">Task Name</td>
+            <td th:text="${task.description}">Task Description</td>
+        </tr>
     </table>
-    <a href="/new">New Task</a>
+    <a href="/tasks/new" class="button">Add New Task</a>
 </body>
 </html>
