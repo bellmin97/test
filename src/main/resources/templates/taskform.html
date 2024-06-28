@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>New Task</title>
+</head>
+<body>
+    <h1>New Task</h1>
+    <form action="#" th:action="@{/save}" th:object="${task}" method="post">
+        <div>
+            <label for="description">Description:</label>
+            <input type="text" id="description" th:field="*{description}" />
+        </div>
+        <div>
+            <label for="status">Status:</label>
+            <select id="status" th:field="*{status}">
+                <option value="Not Started">Not Started</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+            </select>
+        </div>
+        <div>
+            <button type="submit">Save</button>
+        </div>
+    </form>
+</body>
+</html>

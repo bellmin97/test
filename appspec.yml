@@ -1,0 +1,10 @@
+version: 0.0
+os: linux
+files:
+  - source: /target/taskmanager-1.0.0.jar
+    destination: /home/test/
+hooks:
+  AfterInstall:
+    - location: scripts/restart_server.sh
+      timeout: 300
+      runas: root
