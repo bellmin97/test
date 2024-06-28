@@ -1,7 +1,7 @@
 version: 0.0
 os: linux
 files:
-  - source: taskmanager-1.0.0.jar
+  - source: ./*
     destination: /home/test/
 hooks:
   AfterInstall:
